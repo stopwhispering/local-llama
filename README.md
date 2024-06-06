@@ -1,7 +1,7 @@
 # Local Llama
 ## Description
 A local LLM Client based on Ollama and Streamlit.
-![img_1.png](img_1.png)
+![browser_preview.png](./static/browser_preview.png)
 
 ## Installation
 * Install [Ollama](https://www.ollama.com/download)
@@ -23,4 +23,4 @@ streamlit run ./local_llama/app.py
 ```
 
 ## Run & Debug in Pycharm
-![img.png](img.png)
+![pycharm_config.png](./static/pycharm_config.png)
