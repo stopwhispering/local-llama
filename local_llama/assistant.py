@@ -3,7 +3,11 @@ from typing import Sequence
 import json
 from local_llama import settings
 from local_llama.entities import Message
-from local_llama.ollama_llm import init_ollama_llm, OllamaModel, OllamaRequest
+from local_llama.ollama_api.ollama_llm import (
+    init_ollama_llm,
+    OllamaModel,
+    OllamaRequest,
+)
 from local_llama.util import CustomEncoder, custom_decode
 
 

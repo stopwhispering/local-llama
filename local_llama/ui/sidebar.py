@@ -4,12 +4,31 @@ from local_llama import settings
 from local_llama.history import get_conversations
 
 
-def get_sidebar_settings() -> tuple[str, float, str, bool, dict, bool]:
+def get_sidebar_settings() -> tuple[str, float, str, bool, str, bool]:
+    # Inject custom CSS to set the width of the sidebar
+    st.markdown(
+        """
+        <style>
+            section[data-testid="stSidebar"] {
+                width: 400px !important; # Set the width to your desired value
+            }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
     with st.sidebar.form(key="new_conversation_form"):
-        model_name = st.selectbox(
-            "Select Model",
-            options=[m["model_name"] for m in settings.available_models],
+        st.caption("Model")
+        selected_model = st.dataframe(  # no default selection possible
+            settings.available_models,
+            hide_index=True,
+            on_select="rerun",
+            selection_mode="single-row",
         )
+        if len(selected_model["selection"]["rows"]) == 1:
+            row_no = selected_model["selection"]["rows"][0]
+            model_name = settings.available_models[row_no]["model"]
+        else:
+            model_name = None
 
         temperature = st.slider(
             "Temperature",
@@ -38,11 +57,19 @@ def get_sidebar_settings() -> tuple[str, float, str, bool, dict, bool]:
         conversations = st.session_state["conversations"]
 
     with st.sidebar.form(key="open_conversation_form"):
-        selected_conversation = st.selectbox(
-            label="Assistant",
-            options=conversations,
-            index=0,
+        st.caption("Conversation")
+        selected_conversation = st.dataframe(  # no default selection possible
+            conversations,
+            hide_index=True,
+            on_select="rerun",
+            selection_mode="single-row",
         )
+        if len(selected_conversation["selection"]["rows"]) == 1:
+            row_no = selected_conversation["selection"]["rows"][0]
+            conversation_uuid = conversations[row_no]["uuid"]
+        else:
+            conversation_uuid = None
+
         open_saved_conversation = st.form_submit_button("Open Conversation")
 
     return (
@@ -50,6 +77,6 @@ def get_sidebar_settings() -> tuple[str, float, str, bool, dict, bool]:
         temperature,
         system_instructions,
         create_new_conversation,
-        selected_conversation,
+        conversation_uuid,
         open_saved_conversation,
     )

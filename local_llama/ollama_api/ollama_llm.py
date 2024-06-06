@@ -3,7 +3,6 @@ from typing import Iterator, Mapping, Any, Sequence, TypedDict, NotRequired
 import ollama
 from ollama import Message as OllamaMessage
 
-from local_llama import settings
 from local_llama.entities import Message
 
 
@@ -15,8 +14,8 @@ class OllamaModel:
     Google Gemma 2b: https://ollama.com/library/gemma (gemma:2b)
     """
 
-    def __init__(self, model_id: str, model_name: str):
-        self.model_id = model_id
+    def __init__(self, model_name: str):
+        # self.model_id = model_id
         self.model_name = model_name
 
     def generate_response_stream(
@@ -25,7 +24,7 @@ class OllamaModel:
         temperature: float,
     ) -> Iterator[Mapping[str, Any]]:
         stream = ollama.chat(
-            model=self.model_id,
+            model=self.model_name,
             messages=[m.as_dict() for m in messages],
             options={
                 "temperature": temperature,
@@ -38,17 +37,17 @@ class OllamaModel:
 
 def init_ollama_llm(model_name: str) -> OllamaModel:
     """factory function to initialize OllamaModel from model_name"""
-    model = next(
-        (
-            model
-            for model in settings.available_models
-            if model["model_name"] == model_name
-        ),
-        None,
-    )
-    if not model:
-        raise ValueError(f"Model {model_name} not found in available models")
-    return OllamaModel(model_id=model["model_id"], model_name=model_name)
+    # model = next(
+    #     (
+    #         model
+    #         for model in settings.available_models
+    #         if model["model_name"] == model_name
+    #     ),
+    #     None,
+    # )
+    # if not model_name:
+    #     raise ValueError(f"Model {model_name} not found in available models")
+    return OllamaModel(model_name=model_name)
 
 
 class OllamaRequest:

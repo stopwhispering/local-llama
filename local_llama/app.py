@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 def display_current_settings(assistant: Assistant):
     st.caption(f"UUID: {assistant.uuid}")
-    st.caption(f"Model: {assistant.llm.model_id}")
+    st.caption(f"Model: {assistant.llm.model_name}")
     st.caption(f"Temperature: {assistant.temperature}")
 
 
@@ -28,12 +28,15 @@ def main():
         new_temperature,
         new_system_instructions,
         create_new_conversation,
-        selected_conversation,
+        selected_conversation_uuid,
         open_saved_conversation,
     ) = get_sidebar_settings()
 
     # new conversation on user request
     if create_new_conversation:
+        if not new_model_name:
+            st.toast("Please select a model to create a new conversation.")
+            return
         assistant = Assistant.create(
             system_instructions=new_system_instructions,
             model_name=new_model_name,
@@ -45,8 +48,11 @@ def main():
 
     # open saved conversation on user request
     elif open_saved_conversation:
-        logger.info(f"Loading saved conversation: {selected_conversation}")
-        assistant = Assistant.load(selected_conversation["uuid"])
+        if not selected_conversation_uuid:
+            st.toast("Please select a conversation.")
+            return
+        logger.info(f"Loading saved conversation: {selected_conversation_uuid}")
+        assistant = Assistant.load(selected_conversation_uuid)
 
     # existing conversation in session
     elif "assistant" in st.session_state:

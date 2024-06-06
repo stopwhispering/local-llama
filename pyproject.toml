@@ -16,11 +16,10 @@ ollama = "^0.2.0"
 pyperclip = "^1.8.2"
 streamlit-tags = "^1.2.8"
 pydantic-settings = "^2.3.1"
-ruff = "^0.4.8"
-
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.7.1"
+ruff = "^0.4.8"
 
 [build-system]
 requires = ["poetry-core"]
