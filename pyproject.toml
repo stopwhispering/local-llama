@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "local-llama"
+version = "0.1.0"
+description = ""
+authors = ["Johannes <stopwhispering314@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+streamlit = "^1.35.0"
+torch = "^2.3.0"
+transformers = "^4.41.2"
+accelerate = "^0.30.1"
+bitsandbytes = "^0.43.1"
+ollama = "^0.2.0"
+pyperclip = "^1.8.2"
+streamlit-tags = "^1.2.8"
+pydantic-settings = "^2.3.1"
+ruff = "^0.4.8"
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.7.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
